@@ -69,4 +69,4 @@ graph TB
     class AWS,EC2,S3,EBS,CloudWatch awsService
     class FastAPI,InvoiceAI,Postgres,pgAdmin,Nginx dockerContainer
     class S3Frontend1,S3Frontend2,S3Data storage
-    class OpenAI,Users external 
+    class OpenAI,Users external
