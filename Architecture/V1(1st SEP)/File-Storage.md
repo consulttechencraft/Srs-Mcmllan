@@ -1,3 +1,4 @@
+```mermaid
 flowchart TD
     User[User Uploads PDF] --> App[Backend App]
     App -->|Upload File| S3[(S3 Bucket)]
