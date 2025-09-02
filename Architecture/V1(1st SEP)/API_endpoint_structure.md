@@ -1,110 +1,92 @@
 ```mermaid
 graph TD
     %% Main API Gateway
-    API[McMillan Enterprise API<br/>v1]
+    API[McMillan Enterprise API v1]
     
     %% Authentication & Authorization Module
     subgraph AUTH["🔐 Authentication & Authorization"]
-        AUTH_USER[User Authentication<br/>POST /auth/register<br/>POST /auth/login<br/>POST /auth/logout<br/>POST /auth/refresh<br/>POST /auth/forgot-password<br/>POST /auth/reset-password<br/>POST /auth/verify-email]
-        
-        AUTH_2FA[Two-Factor Authentication<br/>POST /auth/2fa/enable<br/>POST /auth/2fa/disable<br/>POST /auth/2fa/verify]
-        
-        AUTH_SSO[Single Sign-On Enterprise<br/>GET /auth/sso/providers<br/>POST /auth/sso/initiate<br/>POST /auth/sso/callback]
+        AUTH_USER[User Authentication<br/>Login, Register, Logout<br/>Password Reset, Email Verify]
+        AUTH_2FA[Two-Factor Authentication<br/>Enable, Disable, Verify 2FA]
+        AUTH_SSO[Single Sign-On Enterprise<br/>SSO Providers & Callbacks]
     end
     
     %% User & Organization Management
     subgraph USER["👥 User & Organization Management"]
-        USER_PROFILE[User Profile<br/>GET /users/profile<br/>PUT /users/profile<br/>GET /users/settings<br/>PUT /users/settings<br/>GET /users/activity-log]
-        
-        USER_TEAM[Team Management<br/>GET /organizations/{org_id}/members<br/>POST /organizations/{org_id}/members<br/>PUT /organizations/{org_id}/members/{user_id}<br/>DELETE /organizations/{org_id}/members/{user_id}]
-        
-        USER_RBAC[Role-Based Access Control<br/>GET /roles<br/>GET /permissions<br/>POST /organizations/{org_id}/roles<br/>PUT /organizations/{org_id}/roles/{role_id}]
+        USER_PROFILE[User Profile<br/>Profile & Settings Management<br/>Activity Logging]
+        USER_TEAM[Team Management<br/>Member Operations<br/>Invitations & Roles]
+        USER_RBAC[Role-Based Access Control<br/>Roles & Permissions<br/>Custom Role Creation]
     end
     
     %% Invoice Management
     subgraph INVOICE["📄 Invoice Management"]
-        INVOICE_OPS[Invoice Operations<br/>POST /invoices/upload<br/>GET /invoices<br/>GET /invoices/{invoice_id}<br/>PUT /invoices/{invoice_id}<br/>DELETE /invoices/{invoice_id}<br/>POST /invoices/{invoice_id}/process]
-        
-        INVOICE_BULK[Bulk Operations<br/>POST /invoices/bulk-upload<br/>POST /invoices/bulk-process<br/>PUT /invoices/bulk-update<br/>DELETE /invoices/bulk-delete]
-        
-        INVOICE_DATA[Data Extraction<br/>GET /invoices/{invoice_id}/extracted-data<br/>PUT /invoices/{invoice_id}/extracted-data<br/>POST /invoices/{invoice_id}/validate<br/>GET /invoices/{invoice_id}/confidence-score]
+        INVOICE_OPS[Invoice Operations<br/>Upload, CRUD Operations<br/>AI Processing Trigger]
+        INVOICE_BULK[Bulk Operations<br/>Multi-Invoice Processing<br/>Batch Updates & Deletes]
+        INVOICE_DATA[Data Extraction<br/>AI-Extracted Data<br/>Validation & Confidence]
     end
     
     %% Data Processing & Validation
     subgraph PROCESS["⚙️ Data Processing & Validation"]
-        PROCESS_VALIDATION[Data Validation<br/>GET /data-validation/pending<br/>POST /data-validation/{item_id}/approve<br/>POST /data-validation/{item_id}/reject<br/>PUT /data-validation/{item_id}/correct]
-        
-        PROCESS_QUEUE[Processing Queue<br/>GET /processing/queue<br/>POST /processing/priority/{invoice_id}<br/>GET /processing/history]
+        PROCESS_VALIDATION[Data Validation<br/>Approval & Rejection<br/>Manual Corrections]
+        PROCESS_QUEUE[Processing Queue<br/>Queue Management<br/>Priority Processing]
     end
     
     %% Bank Reconciliation
     subgraph BANK["🏦 Bank Reconciliation"]
-        BANK_RECON[Reconciliation Operations<br/>POST /reconciliation/create<br/>GET /reconciliation/reports<br/>GET /reconciliation/reports/{report_id}<br/>PUT /reconciliation/reports/{report_id}]
-        
-        BANK_INTEGRATION[Bank Data Integration<br/>GET /bank-accounts<br/>POST /bank-accounts/connect<br/>DELETE /bank-accounts/{account_id}<br/>POST /bank-accounts/{account_id}/sync]
+        BANK_RECON[Reconciliation Operations<br/>Report Creation<br/>Export Capabilities]
+        BANK_INTEGRATION[Bank Data Integration<br/>Account Connection<br/>Transaction Sync]
     end
     
     %% Analytics & Reporting
     subgraph ANALYTICS["📊 Analytics & Reporting"]
-        ANALYTICS_DASH[Dashboard Data<br/>GET /dashboard/overview<br/>GET /dashboard/recent-activity<br/>GET /dashboard/processing-metrics<br/>GET /dashboard/team-workload]
-        
-        ANALYTICS_DATA[Analytics<br/>GET /analytics/invoice-trends<br/>GET /analytics/vendor-analysis<br/>GET /analytics/processing-time<br/>GET /analytics/accuracy-metrics]
-        
-        ANALYTICS_REPORTS[Custom Reports<br/>POST /reports/create<br/>GET /reports<br/>GET /reports/{report_id}<br/>PUT /reports/{report_id}<br/>POST /reports/{report_id}/schedule]
+        ANALYTICS_DASH[Dashboard Data<br/>Overview & Metrics<br/>Team Workload]
+        ANALYTICS_DATA[Analytics Engine<br/>Trends & Analysis<br/>Accuracy Metrics]
+        ANALYTICS_REPORTS[Custom Reports<br/>Report Creation<br/>Scheduled Delivery]
     end
     
     %% Integrations
     subgraph INTEGRATIONS["🔗 Integrations"]
-        INTEGRATIONS_ACCOUNTING[Accounting Software<br/>GET /integrations/available<br/>POST /integrations/quickbooks/connect<br/>POST /integrations/xero/connect<br/>POST /integrations/netsuite/connect<br/>POST /integrations/sap/connect]
-        
-        INTEGRATIONS_CUSTOM[Custom API Enterprise<br/>POST /integrations/custom/webhook<br/>GET /integrations/custom/webhooks<br/>PUT /integrations/custom/webhooks/{webhook_id}]
-        
-        INTEGRATIONS_SYNC[Data Sync<br/>POST /integrations/{integration_id}/sync<br/>GET /integrations/{integration_id}/sync-status<br/>GET /integrations/{integration_id}/sync-history]
+        INTEGRATIONS_ACCOUNTING[Accounting Software<br/>QuickBooks, Xero<br/>NetSuite, SAP]
+        INTEGRATIONS_CUSTOM[Custom API Enterprise<br/>Webhooks Management<br/>Custom Endpoints]
+        INTEGRATIONS_SYNC[Data Synchronization<br/>Sync Operations<br/>Status & History]
     end
     
     %% Subscription & Billing
     subgraph BILLING["💳 Subscription & Billing"]
-        BILLING_SUB[Subscription Management<br/>GET /subscription/current<br/>POST /subscription/upgrade<br/>POST /subscription/downgrade<br/>PUT /subscription/billing-cycle]
-        
-        BILLING_USAGE[Usage Tracking<br/>GET /usage/current-month<br/>GET /usage/history<br/>GET /usage/limits<br/>POST /usage/alerts]
-        
-        BILLING_PAY[Billing<br/>GET /billing/invoices<br/>GET /billing/payment-methods<br/>POST /billing/payment-methods<br/>PUT /billing/payment-methods/{method_id}]
+        BILLING_SUB[Subscription Management<br/>Plan Upgrades<br/>Billing Cycle Changes]
+        BILLING_USAGE[Usage Tracking<br/>Monthly Usage<br/>Limits & Alerts]
+        BILLING_PAY[Payment Management<br/>Payment Methods<br/>Billing History]
     end
     
     %% Notifications
     subgraph NOTIFICATIONS["🔔 Notifications & Communication"]
-        NOTIF_MANAGE[Notifications<br/>GET /notifications<br/>PUT /notifications/{notification_id}/read<br/>POST /notifications/mark-all-read<br/>PUT /notifications/settings]
-        
-        NOTIF_ALERTS[Email & Alerts<br/>POST /alerts/create<br/>GET /alerts<br/>PUT /alerts/{alert_id}<br/>DELETE /alerts/{alert_id}]
+        NOTIF_MANAGE[Notification Management<br/>Read Status<br/>User Preferences]
+        NOTIF_ALERTS[Custom Alerts<br/>Alert Configuration<br/>Email Notifications]
     end
     
     %% Support
     subgraph SUPPORT["🎧 Support & Help"]
-        SUPPORT_TICKETS[Support Tickets<br/>POST /support/tickets<br/>GET /support/tickets<br/>GET /support/tickets/{ticket_id}<br/>PUT /support/tickets/{ticket_id}]
-        
-        SUPPORT_KB[Knowledge Base<br/>GET /help/articles<br/>GET /help/articles/{article_id}<br/>GET /help/categories<br/>POST /help/feedback]
+        SUPPORT_TICKETS[Support System<br/>Ticket Management<br/>Message Threading]
+        SUPPORT_KB[Knowledge Base<br/>Help Articles<br/>Feedback System]
     end
     
     %% Security & Compliance
     subgraph SECURITY["🛡️ Security & Compliance"]
-        SECURITY_SETTINGS[Security Settings<br/>GET /security/sessions<br/>DELETE /security/sessions/{session_id}<br/>GET /security/login-history<br/>POST /security/api-keys]
-        
-        SECURITY_AUDIT[Audit & Compliance<br/>GET /audit/logs<br/>POST /compliance/export-data<br/>POST /compliance/delete-data<br/>GET /compliance/certifications]
+        SECURITY_SETTINGS[Security Management<br/>Session Control<br/>API Key Management]
+        SECURITY_AUDIT[Audit & Compliance<br/>Audit Logs Enterprise<br/>Data Export GDPR]
     end
     
     %% File Management
     subgraph FILES["📁 File Management"]
-        FILES_OPS[File Operations<br/>POST /files/upload<br/>GET /files/{file_id}<br/>DELETE /files/{file_id}<br/>GET /files/{file_id}/metadata]
-        
-        FILES_DOC[Document Processing<br/>POST /documents/ocr<br/>GET /documents/{doc_id}/preview<br/>POST /documents/{doc_id}/extract]
+        FILES_OPS[File Operations<br/>Upload & Download<br/>Metadata Management]
+        FILES_DOC[Document Processing<br/>OCR Processing<br/>Data Extraction]
     end
     
     %% External Services
     OPENAI[OpenAI API<br/>AI Processing]
-    ACCOUNTING[Accounting Systems<br/>QuickBooks, Xero, NetSuite, SAP]
-    BANKS[Banking APIs<br/>Transaction Data]
+    ACCOUNTING_SYS[Accounting Systems<br/>QuickBooks, Xero<br/>NetSuite, SAP]
+    BANKING_API[Banking APIs<br/>Transaction Data]
     
-    %% Main connections
+    %% Main API connections
     API --> AUTH
     API --> USER
     API --> INVOICE
@@ -118,17 +100,41 @@ graph TD
     API --> SECURITY
     API --> FILES
     
-    %% Cross-module relationships
-    AUTH --> USER
-    USER --> INVOICE
-    INVOICE --> PROCESS
-    INVOICE --> FILES_DOC
-    PROCESS --> ANALYTICS
-    BANK --> ANALYTICS
-    INTEGRATIONS --> ACCOUNTING
-    BANK --> BANKS
-    PROCESS --> OPENAI
-    INVOICE --> OPENAI
+    %% Internal module connections
+    AUTH --> USER_PROFILE
+    AUTH --> USER_TEAM
+    AUTH --> USER_RBAC
+    
+    USER --> INVOICE_OPS
+    INVOICE_OPS --> INVOICE_BULK
+    INVOICE_OPS --> INVOICE_DATA
+    
+    INVOICE_DATA --> PROCESS_VALIDATION
+    INVOICE_DATA --> PROCESS_QUEUE
+    
+    PROCESS_VALIDATION --> ANALYTICS_DATA
+    BANK_RECON --> ANALYTICS_DATA
+    
+    %% External service connections
+    INTEGRATIONS_ACCOUNTING --> ACCOUNTING_SYS
+    BANK_INTEGRATION --> BANKING_API
+    PROCESS_QUEUE --> OPENAI
+    FILES_DOC --> OPENAI
+    
+    %% Cross-functional relationships
+    SECURITY_SETTINGS --> AUTH_USER
+    NOTIF_MANAGE --> PROCESS_VALIDATION
+    ANALYTICS_REPORTS --> BILLING_USAGE
+    
+    %% API Design Principles Box
+    subgraph PRINCIPLES["⚙️ API Design Principles"]
+        REST[RESTful Design<br/>Standard HTTP Methods<br/>JSON Format]
+        PAGINATION[Pagination & Filtering<br/>Standard Parameters<br/>Sorting Support]
+        VERSIONING[API Versioning<br/>Backward Compatibility<br/>Deprecation Management]
+        SECURITY_PRIN[Security Standards<br/>JWT Authentication<br/>Rate Limiting]
+    end
+    
+    API --> PRINCIPLES
     
     %% Styling
     classDef authModule fill:#FF6B6B,stroke:#fff,stroke-width:2px,color:#fff
@@ -145,6 +151,7 @@ graph TD
     classDef fileModule fill:#D7BDE2,stroke:#fff,stroke-width:2px,color:#fff
     classDef external fill:#AED6F1,stroke:#333,stroke-width:2px,color:#333
     classDef main fill:#2C3E50,stroke:#fff,stroke-width:3px,color:#fff
+    classDef principles fill:#E8F8F5,stroke:#27AE60,stroke-width:2px,color:#27AE60
     
     class AUTH authModule
     class USER userModule
@@ -158,5 +165,6 @@ graph TD
     class SUPPORT supportModule
     class SECURITY securityModule
     class FILES fileModule
-    class OPENAI,ACCOUNTING,BANKS external
+    class OPENAI,ACCOUNTING_SYS,BANKING_API external
     class API main
+    class PRINCIPLES principles
